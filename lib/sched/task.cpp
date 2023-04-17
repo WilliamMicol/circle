@@ -166,7 +166,7 @@ void CTask::InitializeRegs (void)
 	m_Regs.ttbr0 = readTTBR0(); // Use kernel page table for this task.
 }
 
-#else
+#else user mode and IRQ interrupt is enabled.
 
 void CTask::InitializeRegs (void)
 {
@@ -223,10 +223,13 @@ CUserModeTask::CUserModeTask(const char *exe_path)
 	// Hint:
 	//   - For ttbr0, read "B4.9.3 Register 2: Translation table base" to learn ttbr0's format.
 	//     - You may find `m_pPageTable->GetBaseAddress();` helpful.
+	m_Regs.ttbr0 = (u32)m_pPageTable->GetBaseAddress();
 	//   - For pc, assign `m_exe_load_addr` to it.
+	m_Regs.pc = (u32)m_exe_load_addr;
 	//   - For sp, assign `m_user_stack_init_addr` to it.
+	m_Regs.sp = (u32)m_user_stack_init_addr;
 	//   - For cpsr, you need to make sure it's user mode and IRQ interrupt is enabled.
-
+	m_Regs.cpsr = (u32)0x10;
 	void *physical_page_1_baseaddr = CMemorySystem::Get()->UserModeTaskPageAllocate();	
 	void *physical_page_2_baseaddr = CMemorySystem::Get()->UserModeTaskPageAllocate();	
 	assert(physical_page_1_baseaddr != 0);
@@ -246,8 +249,8 @@ CUserModeTask::CUserModeTask(const char *exe_path)
 
 	u32 *pageTable = m_pPageTable->GetPageTable();
 
-	int page_no_1 = 0x0; // TODO: figure out what this variable should be.
-	int page_no_2 = 0x0; // TODO: figure out what this variable should be.
+	int page_no_1 = 0x800; // TODO: figure out what this variable should be.
+	int page_no_2 = 0x800; // TODO: figure out what this variable should be.
 
 	pageTable[page_no_1] = (int)physical_page_1_baseaddr | 0xC0E;
 	pageTable[page_no_2] = (int)physical_page_2_baseaddr | 0xC1E;
