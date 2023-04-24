@@ -211,10 +211,10 @@ CUserModeTask::CUserModeTask(const char *exe_path)
 		CMemorySystem::Get()->GetKernelPageTable()
 	);
 	assert (m_pPageTable != 0);
-
+	
 	const u32 *m_exe_load_addr = (u32*)0x80000000;
 	const u32 *m_user_stack_init_addr = (u32*)0x9FFFFFF0;
-
+	kernel_sp = m_Regs.sp;
 	// NOTE: In this project, the ARM virtual memory system uses pages of 1MB.
 	// 	 The page table entry uses the "Section" format of [1]'s
 	//	 "Table B4-2 First-level descriptor format (VMSAv6, subpages disabled)"
@@ -283,4 +283,5 @@ extern "C" int get_saved_user_sp() {
 	CUserModeTask* pUserModeTask = (CUserModeTask*)(CScheduler::Get()->GetCurrentTask());
 	return pUserModeTask->user_sp;
 }
+
 

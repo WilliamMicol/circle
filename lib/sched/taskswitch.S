@@ -25,10 +25,36 @@
 	.globl	TaskSwitch
 TaskSwitch:
 	// TODO: delete the instruction below: 
-	bx	lr
+	//bx	lr
 
-	// TODO: Copy your working project 3 solution to here.
+	// TODO: Implement `TaskSwitch`
+	// Hint: 
+	// We actually don't need to write a lot of codes here because 
+	// a working design of context switch has been implemented in 
+	// project 2 (See `__contextswitch_impl` in `lib/exceptionstub.S`).
+	// 
+	// However, we cannot just jump to `__contextswitch_impl` here because
+	// some assumptions held by `__contextswitch_impl` are not satisfied yet.
+	//
+	// Therefore, we need to do the following:
+	//	- Identify what assumptions held by `__contextswitch_impl` must 
+	// 	  be satisfied before we jump to `__contextswitch_impl`.
+	//	- Write codes here so that the assumptions are satisfied.
+	//	- Jump to __contextswitch_impl.
 
+	//save current pc (lr)
+	mov   r0,lr
+	mrs   r1,cpsr
+	//switch to IRQ mode
+	//banked_lr <-r0
+    cpsid i,#0x12
+	// spsr <- r1
+
+    mov   lr,r0
+    msr  spsr_cxsf,r1
+
+	// jump to __contextswitch_impl
+    b __contextswitch_impl
 
 
 	.global readTTBR0
