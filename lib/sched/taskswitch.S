@@ -25,18 +25,10 @@
 	.globl	TaskSwitch
 TaskSwitch:
 	// TODO: delete the instruction below: 
-    mov   r0,lr
-    mrs   r1,cpsr
-    //switch to IRQ mode
-    //banked_lr <-r0
-    cpsid i,#0x12
-    // spsr <- r1
+	bx	lr
 
-    mov   lr,r0
-    msr  spsr_cxsf,r1
+	// TODO: Copy your working project 3 solution to here.
 
-    // jump to __contextswitch_impl
-    b __contextswitch_impl
 
 
 	.global readTTBR0

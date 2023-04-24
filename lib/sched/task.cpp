@@ -284,4 +284,3 @@ extern "C" int get_saved_user_sp() {
 	return pUserModeTask->user_sp;
 }
 
-
