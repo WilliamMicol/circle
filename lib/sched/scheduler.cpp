@@ -228,6 +228,7 @@ void CScheduler::AddTask (CTask *pTask)
 		if (m_pTask[i] == 0)
 		{
 			m_pTask[i] = pTask;
+            EnableIRQs();
 			return;
 		}
 	}
@@ -339,7 +340,7 @@ void CScheduler::WakeTasks (CTask **ppWaitListHead)
 
 unsigned CScheduler::GetNextTask (void)
 {
-	DisableIRQs();
+	//DisableIRQs();
 	//Diable the IRQ because m_pTask is being used in this area
 	// Added by TA: Making sure no active task is mistakenly considered removed.
 	for (unsigned i = m_nTasks; i <MAX_TASKS; i++) {
@@ -476,7 +477,7 @@ unsigned CScheduler::GetNextTask (void)
 			break;
 		}
 	}
-	EnableIRQs();
+	//EnableIRQs();
 	return MAX_TASKS;
 }
 
